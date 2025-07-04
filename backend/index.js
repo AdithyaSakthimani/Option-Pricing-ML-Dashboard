@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import Prediction_Data_Schema from './MongoSchema.js';
+import Prediction from './MongoSchema.js';
 import User_Schema from './UserSchema.js' ; 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -23,49 +23,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 5000;
-app.post('/sendData', async (req, res) => {
-  try{const data = req.body;
-  const predictionData = new Prediction_Data_Schema({
-    stock: data.stock,
-    model: data.model,
-    formData: {
-      bidPrice: data.bidPrice,
-      askPrice: data.askPrice,
-      strikePrice: data.strikePrice,
-      expiryDate: data.expiryDate,
-      impliedVolatility: data.impliedVolatility,
-      riskFreeRate: data.riskFreeRate,
-      timeToMaturity: data.timeToMaturity
-    },
-    prediction: {
-      callPrice: data.callPrice,
-      putPrice: data.putPrice,
-      delta: data.delta,
-      gamma: data.gamma,
-      theta: data.theta,
-      vega: data.vega
-    },
-    userId: data.userId 
-  });
-  await predictionData.save();
-  res.status(200).send('Saved the data successfully');}
-  catch (error) {
-    console.error('Error saving data:', error);
-    res.status(500).send('Error saving data ');
-
-  }
-});
-app.post('/getData', async (req, res) => {
-  try{const data = req.body ;
-  const userName = data.user ; 
-  const prediction = await Prediction_Data_Schema.find({userId:userName})
-  res.status(200).json({
-    message:'data fetched successfully',
-    prediction})}
-  catch(error){
-    res.status(500).send('error fetching data',error)
-  }
-});
 app.post('/signup', async (req, res) => {
   try {
     console.log('Signup request received:', req.body);
@@ -117,4 +74,65 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Login failed', error: error.message });
   }
 });
+
+
+app.post('/save-analysis', async (req, res) => {
+  try {
+    const { userId, results } = req.body;
+
+    if (!userId || !results) {
+      return res.status(400).json({ message: 'Missing userId or results data' });
+    }
+
+    const newPrediction = new Prediction({
+      userId,
+      ...results 
+    });
+
+    await newPrediction.save();
+
+    res.status(200).json({ message: 'Analysis saved successfully' });
+  } catch (error) {
+    console.error('Error saving analysis:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+app.post('/get-user-analyses', async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: 'Missing userId' });
+    }
+
+    const predictions = await Prediction.find({ userId }).sort({ createdAt: -1 });
+
+    res.status(200).json({ message: 'Fetched predictions', data: predictions });
+  } catch (error) {
+    console.error('Error fetching analyses:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+app.delete('/delete-analysis/:id', async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID required for deletion' });
+  }
+
+  try {
+    const deleted = await Prediction.findOneAndDelete({ _id: id, userId });
+
+    if (!deleted) {
+      return res.status(404).json({ message: 'Analysis not found or not authorized' });
+    }
+
+    res.status(200).json({ message: 'Analysis deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting analysis:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

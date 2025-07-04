@@ -1,12 +1,11 @@
-import React, { useState,useContext} from 'react';
-import { Home, Brain, Zap, Menu, X, User, LogOut, LogIn , Sun , Moon } from 'lucide-react';
+import React, { useState,useContext,useEffect} from 'react';
+import { Home, Brain, Zap, Menu, X, User, LogOut, LogIn , Sun , Moon ,History } from 'lucide-react';
 import '../Styles/Navbar.css';
 import NoteContext from '../Context/NoteContext';
 import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState('home');
-  const {username, setUsername,isAuthenticated, setIsAuthenticated,darkMode,email,setDarkMode}= useContext(NoteContext);
+  const {username, setUsername,isAuthenticated, setIsAuthenticated,darkMode,email,setDarkMode,activeItem, setActiveItem}= useContext(NoteContext);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate() ; 
   const toggleTheme = () => {
@@ -15,11 +14,16 @@ const Navbar = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-
+  
+  useEffect(() => {
+  const theme = darkMode ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+}, [darkMode]);
   const navItems = [
     { id: 'home', label: 'Home Page', icon: Home , link:'/' },
     { id: 'trainer', label: 'Model Trainer', icon: Brain , link:'/train' },
     { id: 'simulation', label: 'AI Simulation', icon: Zap , link:'/options' },
+    { id: 'pastanalysis', label: 'Past Analysis', icon: History , link:'/pastanalysis' },
   ];
 
   const handleNavClick = (itemId) => {
@@ -64,7 +68,7 @@ const Navbar = () => {
             <div className="logo-icon" onClick={() => navigate('/')}>
               <Brain size={20} />
             </div>
-            <span>AI Platform</span>
+            <span>DerivIQ</span>
           </div>
 
           {/* Desktop Navigation */}

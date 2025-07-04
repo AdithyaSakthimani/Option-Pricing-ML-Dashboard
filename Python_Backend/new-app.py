@@ -11,11 +11,11 @@ from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from pandas_datareader import data as web
 import warnings
-from flask_cors import CORS
+
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
-CORS(app)
+
 def fetch_options_data(stock):
     ticker = yf.Ticker(stock)
     try:
@@ -75,6 +75,7 @@ def predict_option_price():
         raw_data['lastTradeDate'] = pd.to_datetime(raw_data['lastTradeDate']).dt.date
         raw_data['expiration_date'] = pd.to_datetime(raw_data['expiration_date'])
         raw_data['stock'] = raw_data['stock'].astype(str)
+        raw_data['spot_price'] = (raw_data.sort_values('lastTradeDate'))['spot_price'].interpolate('linear')
         raw_data = raw_data.fillna(0)
 
         start = raw_data['expiration_date'].min() - timedelta(days=7)
@@ -186,20 +187,22 @@ def predict_option_price():
         prediction = selected_model.predict(input_scaled)[0]
 
         return jsonify({
-            "lastPrice": round(float(prediction), 2),
-            "mse": round(float(mse), 4),
-            "r2": round(float(r2), 4),
+            "predicted_price": format(float(prediction.item()), ".6e"),
+            "mse": round(float(mse.item()), 4) if hasattr(mse, 'item') else round(float(mse), 4),
+            "r2_score": round(float(r2), 4),
             "adjusted_r2": round(float(adjusted_r2), 4),
-            "impliedVolatility": round(float(sigma), 4),  # <-- ✅ Added here
-            "greeks": {
-                "delta": round(greeks.get("Delta", 0), 4),
-                "gamma": round(greeks.get("Gamma", 0), 4),
-                "theta": round(greeks.get("Theta", 0), 4),
-                "vega": round(greeks.get("Vega", 0), 4),
-                "rho": round(greeks.get("Rho", 0), 4),
-            },
-            "weightageFactors": weightageFactors,
-            "residualData": residualData
+            "greeks": {k: format(float(v), ".6e") for k, v in greeks.items()},
+            "weightageFactors": [
+                {
+                    "factor": wf["factor"],
+                    "weight": float(wf["weight"]),
+                    "color": wf["color"]
+                } for wf in weightageFactors
+            ],
+            "residualData": [
+                {"x": int(d["x"]), "residual": float(d["residual"])}
+                for d in residualData
+            ]
         })
 
     except Exception as e:

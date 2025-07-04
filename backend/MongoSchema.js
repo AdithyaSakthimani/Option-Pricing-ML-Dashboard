@@ -1,74 +1,57 @@
 import mongoose from 'mongoose';
+
 const PredictionSchema = new mongoose.Schema({
-  stock: {
-    type: String,
-    required: true
-  },
-  model: {
-    type: String,
-    required: true
-  },
-  formData: {
-    bidPrice: {
-      type: Number,
-      required: true
-    },
-    askPrice: {
-      type: Number,
-      required: true
-    },
-    strikePrice: {
-      type: Number,
-      required: true
-    },
-    expiryDate: {
-      type: Date,
-      required: true
-    },
-    impliedVolatility: {
-      type: Number,
-      required: true
-    },
-    riskFreeRate: {
-      type: Number,
-      required: true
-    },
-    timeToMaturity: {
-      type: Number,
-      required: true
-    }
-  },
-  prediction: {
-    callPrice: {
-      type: Number,
-      required: true
-    },
-    putPrice: {
-      type: Number,
-      required: true
-    },
-    delta: {
-      type: Number,
-      required: true
-    },
-    gamma: {
-      type: Number,
-      required: true
-    },
-    theta: {
-      type: Number,
-      required: true
-    },
-    vega: {
-      type: Number,
-      required: true
-    }
-  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  inputs: {
+    stock_ticker: String,
+    strike_price: String,
+    option_type: String,
+    expiry_date: String,
+    evaluation_date: String,
+    time_to_expiry_days: Number,
+    time_to_expiry_years: String
+  },
+  market_data: {
+    spot_price: String,
+    spot_price_method: String,
+    volatility: String,
+    volatility_method: String,
+    risk_free_rate: String
+  },
+  spot_price_details: mongoose.Schema.Types.Mixed, 
+  greeks: {
+    Delta: String,
+    Gamma: String,
+    Theta: String,
+    Vega: String,
+    Rho: String
+  },
+  predictions: {
+    ml_model_price: String,
+    black_scholes_price: String,
+    price_difference: String,
+    percentage_difference: Number,
+    r2_score: Number,
+    mae: Number
+  },
+  weightageFactors: [
+    {
+      factor: String,
+      weight: Number,
+      color: String
+    }
+  ],
+  residualData: [
+    {
+      x: Number,
+      residual: Number
+    }
+  ]
 }, { timestamps: true });
-const Prediction_Data_Schema = mongoose.model('Prediction', PredictionSchema);
-export default Prediction_Data_Schema;
+
+const Prediction = mongoose.model('Prediction', PredictionSchema);
+export default Prediction;

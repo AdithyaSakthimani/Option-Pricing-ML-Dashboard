@@ -7,7 +7,14 @@ function NoteState(props) {
     const stored = localStorage.getItem('darkMode');
     return stored !== null ? JSON.parse(stored) : false;
   });
-
+  const [userId , setUserId] = useState(()=>{
+    const stored = localStorage.getItem('userId') ; 
+    return stored !== null ? JSON.parse(stored) : null ; 
+  })
+  const [activeItem, setActiveItem] = useState(() => {
+    const stored = localStorage.getItem('activeItem');
+    return stored !== null ? JSON.parse(stored) : 'home';
+  });
   const [username, setUsername] = useState(() => {
     const stored = localStorage.getItem('username');
     return stored !== null ? JSON.parse(stored) : '';
@@ -19,10 +26,15 @@ function NoteState(props) {
     const stored = localStorage.getItem('isAuthenticated');
     return stored !== null ? JSON.parse(stored) : false;
   });
+  useEffect(() => {
+    localStorage.setItem('activeItem', JSON.stringify(activeItem));
+  }, [activeItem]);
     useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
-
+  useEffect(() => {
+  localStorage.setItem('userId', JSON.stringify(userId));
+}, [userId]);
   useEffect(() => {
     localStorage.setItem('username', JSON.stringify(username));
   }, [username]);
@@ -73,14 +85,73 @@ function NoteState(props) {
     { symbol: 'AMD', name: 'Advanced Micro Devices' },
     { symbol: 'CRM', name: 'Salesforce Inc.' }
   ];
+  const popularTickers = [
+    { symbol: 'AAPL', name: 'Apple Inc.', sector: 'Technology' },
+    { symbol: 'MSFT', name: 'Microsoft Corporation', sector: 'Technology' },
+    { symbol: 'GOOGL', name: 'Alphabet Inc.', sector: 'Technology' },
+    { symbol: 'AMZN', name: 'Amazon.com Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'TSLA', name: 'Tesla Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'META', name: 'Meta Platforms Inc.', sector: 'Technology' },
+    { symbol: 'NVDA', name: 'NVIDIA Corporation', sector: 'Technology' },
+    { symbol: 'NFLX', name: 'Netflix Inc.', sector: 'Communication Services' },
+    { symbol: 'BABA', name: 'Alibaba Group Holding Ltd.', sector: 'Consumer Discretionary' },
+    { symbol: 'V', name: 'Visa Inc.', sector: 'Financial Services' },
+    { symbol: 'JPM', name: 'JPMorgan Chase & Co.', sector: 'Financial Services' },
+    { symbol: 'JNJ', name: 'Johnson & Johnson', sector: 'Healthcare' },
+    { symbol: 'WMT', name: 'Walmart Inc.', sector: 'Consumer Staples' },
+    { symbol: 'PG', name: 'Procter & Gamble Co.', sector: 'Consumer Staples' },
+    { symbol: 'UNH', name: 'UnitedHealth Group Inc.', sector: 'Healthcare' },
+    { symbol: 'HD', name: 'Home Depot Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'DIS', name: 'Walt Disney Co.', sector: 'Communication Services' },
+    { symbol: 'MA', name: 'Mastercard Inc.', sector: 'Financial Services' },
+    { symbol: 'PYPL', name: 'PayPal Holdings Inc.', sector: 'Financial Services' },
+    { symbol: 'ADBE', name: 'Adobe Inc.', sector: 'Technology' },
+    { symbol: 'CRM', name: 'Salesforce Inc.', sector: 'Technology' },
+    { symbol: 'INTC', name: 'Intel Corporation', sector: 'Technology' },
+    { symbol: 'AMD', name: 'Advanced Micro Devices Inc.', sector: 'Technology' },
+    { symbol: 'COIN', name: 'Coinbase Global Inc.', sector: 'Financial Services' },
+    { symbol: 'UBER', name: 'Uber Technologies Inc.', sector: 'Technology' },
+    { symbol: 'LYFT', name: 'Lyft Inc.', sector: 'Technology' },
+    { symbol: 'SNAP', name: 'Snap Inc.', sector: 'Communication Services' },
+    { symbol: 'TWTR', name: 'Twitter Inc.', sector: 'Communication Services' },
+    { symbol: 'ZOOM', name: 'Zoom Video Communications Inc.', sector: 'Technology' },
+    { symbol: 'ROKU', name: 'Roku Inc.', sector: 'Communication Services' },
+    { symbol: 'SQ', name: 'Block Inc.', sector: 'Technology' },
+    { symbol: 'SHOP', name: 'Shopify Inc.', sector: 'Technology' },
+    { symbol: 'SPOT', name: 'Spotify Technology S.A.', sector: 'Communication Services' },
+    { symbol: 'PINS', name: 'Pinterest Inc.', sector: 'Communication Services' },
+    { symbol: 'DOCU', name: 'DocuSign Inc.', sector: 'Technology' },
+    { symbol: 'ZM', name: 'Zoom Video Communications Inc.', sector: 'Technology' },
+    { symbol: 'PLTR', name: 'Palantir Technologies Inc.', sector: 'Technology' },
+    { symbol: 'RBLX', name: 'Roblox Corporation', sector: 'Communication Services' },
+    { symbol: 'RIVN', name: 'Rivian Automotive Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'LCID', name: 'Lucid Group Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'F', name: 'Ford Motor Company', sector: 'Consumer Discretionary' },
+    { symbol: 'GM', name: 'General Motors Company', sector: 'Consumer Discretionary' },
+    { symbol: 'NIO', name: 'NIO Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'XPEV', name: 'XPeng Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'LI', name: 'Li Auto Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'ABNB', name: 'Airbnb Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'DASH', name: 'DoorDash Inc.', sector: 'Consumer Discretionary' },
+    { symbol: 'SNOW', name: 'Snowflake Inc.', sector: 'Technology' },
+    { symbol: 'DDOG', name: 'Datadog Inc.', sector: 'Technology' },
+    { symbol: 'CRWD', name: 'CrowdStrike Holdings Inc.', sector: 'Technology' },
+    { symbol: 'ZS', name: 'Zscaler Inc.', sector: 'Technology' },
+    { symbol: 'OKTA', name: 'Okta Inc.', sector: 'Technology' }
+  ];
 
   // Model options
   const models = [
-    { id: 'black-scholes', name: 'Black-Scholes Model' },
-    { id: 'binomial', name: 'Binomial Model' },
-    { id: 'monte-carlo', name: 'Monte Carlo Simulation' },
-    { id: 'lstm', name: 'LSTM Neural Network' }
+  { id: 'linear-regression', name: 'Linear Regression' },
+  { id: 'random-forest', name: 'Random Forest Regressor' },
+  { id: 'gradient-boosting', name: 'Gradient Boosting Regressor' },
+  { id: 'xgboost', name: 'XGBoost Regressor' }
   ];
+  const [analyses, setAnalyses] = useState([]);
+  const option_types=[
+  { id: 'call', name: 'Call Option' },
+  { id: 'put', name: 'Put Option' }
+  ]
    const [showResults, setShowResults] = useState(false);
    const [loading, setLoading] = useState(false);
    const [formData, setFormData] = useState({
@@ -88,9 +159,10 @@ function NoteState(props) {
      modelName: '',
      expiryDate: ''
    });
-   const [data] = useState(mockAnalysisData);
+   const[model , setModel] = useState('') ; 
+   const [data,setData] = useState(mockAnalysisData);
   return(
-    <NoteContext.Provider  value={{ darkMode,setDarkMode ,username, setUsername,isAuthenticated, setIsAuthenticated,showResults,setShowResults,loading,setLoading,formData,setFormData , data , companies , models}}>
+    <NoteContext.Provider  value={{ darkMode,setDarkMode ,username, setUsername,isAuthenticated, setIsAuthenticated,showResults,setShowResults,loading,setLoading,formData,setFormData , data , setData , companies , models , option_types , activeItem, setActiveItem,analyses, setAnalyses,userId , setUserId,setEmail , email , model , setModel }}>
         {props.children}
       </NoteContext.Provider>
   )

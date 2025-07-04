@@ -48,7 +48,7 @@ export default function SignInCard() {
     email: '',
     password: '',
   });
-  const {username, setUsername,isAuthenticated, setIsAuthenticated , email,setEmail  } = useContext(NoteContext);
+  const {username, setUsername,isAuthenticated, setIsAuthenticated , email,setEmail , userId , setUserId } = useContext(NoteContext);
   const validateInputs = () => {
     const { email, password } = formData;
     const newErrors = {  email: '', password: '' };
@@ -79,18 +79,20 @@ export default function SignInCard() {
     if (!validateInputs()) return;
 
     try {
-      const res = await axios.post('http://localhost:5000/login', formData);
+      const res = await axios.post('http://localhost:8000/login', formData);
       setStatus({ type: 'success', message: res.data.message });
       console.log(res.data);
       setUsername(res.data.user.name);
+      setUserId(res.data.user.id) ; 
       setEmail(res.data.user.email);
       setIsAuthenticated(true);
     } catch (err) {
-      setStatus({
-        type: 'error',
-        message: err.response?.data?.message || 'Signin failed',
-      });
-    }
+  console.error("Login error:", err); // 👈 Add this
+  setStatus({
+    type: 'error',
+    message: err.response?.data?.message || 'Signin failed',
+  });
+}
   };
 
   return (

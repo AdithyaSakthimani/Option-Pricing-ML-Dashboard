@@ -29,71 +29,74 @@ const App = () => {
     }));
   };
 
-  const simulateTraining = () => {
-    return new Promise((resolve) => {
-      let progress = 0;
-      let epoch = 0;
-      const totalEpochs = 100;
-      
-      const interval = setInterval(() => {
-        progress += Math.random() * 3 + 1;
-        epoch = Math.floor((progress / 100) * totalEpochs);
-        
-        setTrainingProgress(Math.min(progress, 100));
-        setCurrentEpoch(epoch);
-        
-        if (progress >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            const mockResults = {
-              r2_score: (0.75 + Math.random() * 0.2).toFixed(3),
-              mae: (1.5 + Math.random() * 2).toFixed(2),
-              rmse: (2.8 + Math.random() * 3).toFixed(2),
-              training_time: '2.34s',
-              feature_importance: [
-                { feature: 'strike_price', importance: 0.284 },
-                { feature: 'time_to_expiry', importance: 0.196 },
-                { feature: 'volatility', importance: 0.173 },
-                { feature: 'underlying_price', importance: 0.158 },
-                { feature: 'interest_rate', importance: 0.112 },
-                { feature: 'dividend_yield', importance: 0.077 }
-              ],
-              predictions: [
-                { actual: 15.2, predicted: (15.2 + (Math.random() - 0.5) * 2).toFixed(1), symbol: 'AAPL_240315C150' },
-                { actual: 8.7, predicted: (8.7 + (Math.random() - 0.5) * 1.5).toFixed(1), symbol: 'TSLA_240322P200' },
-                { actual: 22.5, predicted: (22.5 + (Math.random() - 0.5) * 3).toFixed(1), symbol: 'MSFT_240329C350' },
-                { actual: 5.3, predicted: (5.3 + (Math.random() - 0.5) * 1).toFixed(1), symbol: 'GOOGL_240405P140' },
-                { actual: 12.8, predicted: (12.8 + (Math.random() - 0.5) * 1.8).toFixed(1), symbol: 'NVDA_240412C280' }
-              ]
-            };
-            resolve(mockResults);
-          }, 500);
-        }
-      }, 50);
+
+  const uploadAndTrainModel = async () => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('model', 'xgboost'); // Or 'random_forest', 'linear', 'gradient_boosting'
+
+  // Add your XGBoost-style hyperparameters
+  formData.append('max_depth', hyperparams.max_depth);
+  formData.append('gamma', hyperparams.gamma);
+  formData.append('subsample', hyperparams.subsample);
+  formData.append('colsample_bytree', hyperparams.colsample_bytree);
+  formData.append('learning_rate', 0.1);  // You can make this adjustable too
+
+  try {
+    const res = await fetch('http://localhost:5000/train_custom_model', {
+      method: 'POST',
+      body: formData
     });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) {
-      alert('Please upload a CSV file');
-      return;
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Training failed');
     }
 
-    setIsTraining(true);
-    setTrainingProgress(0);
-    setCurrentEpoch(0);
-    setResults(null);
-    
-    try {
-      const results = await simulateTraining();
-      setResults(results);
-    } catch (error) {
-      console.error('Training failed:', error);
-    } finally {
-      setIsTraining(false);
-    }
-  };
+    const data = await res.json();
+    return {
+      r2_score: data.r2_score,
+      mae: data.mae,
+      rmse: data.rmse || (Math.sqrt(data.mae) * 1.5).toFixed(2),
+      training_time: 'N/A',
+      feature_importance: data.feature_importance || [],
+      predictions: []  // You can load sample predictions later if needed
+    };
+  } catch (error) {
+    console.error('Training failed:', error.message);
+    throw error;
+  }
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!file) {
+    alert('Please upload a CSV file');
+    return;
+  }
+
+  setIsTraining(true);
+  setTrainingProgress(0);
+  setCurrentEpoch(0);
+  setResults(null);
+
+  try {
+    const interval = setInterval(() => {
+      setTrainingProgress((prev) => Math.min(prev + Math.random() * 5, 100));
+      setCurrentEpoch((prev) => Math.min(prev + 1, 100));
+    }, 50);
+
+    const result = await uploadAndTrainModel();
+    clearInterval(interval);
+    setTrainingProgress(100);
+    setCurrentEpoch(100);
+    setResults(result);
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    setIsTraining(false);
+  }
+};
 
   return (
     <div className={`training-app ${darkMode ? 'dark' : 'light'}`}>
