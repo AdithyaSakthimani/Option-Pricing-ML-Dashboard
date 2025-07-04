@@ -6,7 +6,7 @@ DerivIQ is a full-stack machine learning web application for predicting American
 
 ## 🧠 Project Highlights
 
-- 📉 Predict American-style option prices using ML models like Ridge Regression and XGBoost
+- Predict American-style option prices using ML models like Ridge Regression and XGBoost
 - 🔁 Compare ML predictions with traditional Binomial pricing models
 - 🧾 Store user queries and model predictions in MongoDB via a Node.js API
 - 📊 View real-time results and analytics in a React-based dashboard
@@ -91,27 +91,8 @@ npm install
 
 ---
 
-### 3. Environment Configuration
 
-Create the following `.env` files:
-
-**api/.env**
-
-```env
-MONGO_URI=mongodb://localhost:27017/option_predictions
-PORT=3001
-```
-
-**(Optional) backend/.env**
-
-```env
-FLASK_ENV=development
-PORT=5000
-```
-
----
-
-### 4. Run the Application
+### 3. Run the Application
 
 **Start Flask ML Backend:**
 
@@ -144,7 +125,7 @@ npm start
 * Visualize:
 
   * ✅ Predicted vs Actual Prices
-  * 📉 Prediction Errors
+  * ⚠️ Prediction Errors
   * ⚙️ Greek Sensitivities
 
 ---
@@ -164,41 +145,6 @@ npm start
 * Add support for LSTM/Transformer models
 * Extend to European and exotic options
 * Implement user login and profile-based prediction history
-* Dockerize and deploy using Render or Vercel
+* Deploy using Render or Vercel
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! To get started:
-
-1. Fork the repo
-2. Create a new branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -m "Add new feature"`
-4. Push to your branch: `git push origin feature-name`
-5. Open a Pull Request 🎉
-
----
-
-## 📜 License
-
-Licensed under the [MIT License](LICENSE).
-
----
-
-## 👩‍💻 Author
-
-**Ananya A.**
-Machine Learning + Quantitative Finance | Full-Stack Developer
-[GitHub](https://github.com/11Anan) | [LinkedIn](https://linkedin.com)
-
-```
-
----
-
-Would you like me to export this as a `.md` file you can directly drop into your GitHub repo? I can also generate:
-
-- `requirements.txt` for the backend
-- `package.json` for the API/frontend
-- `.gitignore` and deployment setup (`Dockerfile`, `Procfile`, etc.) if needed.
 ```
