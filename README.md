@@ -1,8 +1,3 @@
-Absolutely! Here's your **final formatted `README.md` file** for the **DerivIQ - Option Price Prediction Platform** — clean, complete, and deploy-ready:
-
----
-
-```markdown
 # 📈 DerivIQ - Option Price Prediction Platform
 
 DerivIQ is a full-stack machine learning web application for predicting American option prices. It integrates a **Flask-based ML backend**, a **Node.js API with MongoDB** for storing predictions, and a **React frontend** for interactive user input and data visualization.
