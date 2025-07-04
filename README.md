@@ -49,9 +49,6 @@ Option-Pricing-ML-Dashboard/
 │
 └── README.md # This file
 
-yaml
-Copy
-Edit
 
 ---
 
@@ -59,10 +56,10 @@ Edit
 
 ### 1. Clone the Repository
 
-bash
+```bash
 git clone https://github.com/11Anan/Option-Pricing-ML-Dashboard.git
 cd Option-Pricing-ML-Dashboard
-2. Install Dependencies
+### 2. Install Dependencies
 Flask ML Backend:
 
 bash
@@ -84,24 +81,12 @@ Copy
 Edit
 cd frontend/src/trading-app/
 npm install
-3. Environment Configuration
+### 3. Environment Configuration
 Create the following .env files:
 
 api/.env
 
-env
-Copy
-Edit
-MONGO_URI=mongodb://localhost:27017/option_predictions
-PORT=3001
-(Optional) backend/.env
-
-env
-Copy
-Edit
-FLASK_ENV=development
-PORT=5000
-4. Run the Application
+### 4. Run the Application
 Start Flask Backend:
 
 bash
