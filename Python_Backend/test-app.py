@@ -19,6 +19,12 @@ from pymongo import MongoClient
 import gridfs
 import pickle
 from bson.objectid import ObjectId
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Loads from .env file by default
+
+MY_MONGO_URI = os.getenv("Mongo_URI")
 app = Flask(__name__)
 CORS(app)
 warnings.filterwarnings('ignore')
@@ -33,7 +39,7 @@ try:
 except ImportError:
     print("Warning: statsmodels not available. ARIMA functionality will be disabled.")
     ARIMA_AVAILABLE = False
-client = MongoClient("mongodb+srv://MidnightGamer:Tester123@cluster0.wqmrn.mongodb.net/ChatSpace?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient(MY_MONGO_URI)
 db = client['option_models']
 fs = gridfs.GridFS(db)
 def predict_spot_price_arima(ticker, evaluation_date, forecast_days=1, lookback_days=252, 
