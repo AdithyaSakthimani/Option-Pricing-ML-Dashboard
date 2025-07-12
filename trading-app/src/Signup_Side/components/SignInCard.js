@@ -79,7 +79,7 @@ export default function SignInCard() {
     if (!validateInputs()) return;
 
     try {
-      const res = await axios.post('http://localhost:8000/login', formData);
+      const res = await axios.post('https://option-pricing-ml-dashboard-1.onrender.com/login', formData);
       setStatus({ type: 'success', message: res.data.message });
       console.log(res.data);
       setUsername(res.data.user.name);

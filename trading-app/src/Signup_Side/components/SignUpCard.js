@@ -86,7 +86,7 @@ export default function SignUpCard() {
     if (!validateInputs()) return;
 
     try {
-      const res = await axios.post('http://localhost:8000/signup', formData);
+      const res = await axios.post('https://option-pricing-ml-dashboard-1.onrender.com/signup', formData);
       setStatus({ type: 'success', message: res.data.message });
     } catch (err) {
       setStatus({

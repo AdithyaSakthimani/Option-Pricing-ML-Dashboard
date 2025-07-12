@@ -12,7 +12,7 @@ const PastAnalysis = () => {
  useEffect(() => {
   const fetchAnalyses = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/get-user-analyses", {
+      const res = await axios.post("https://option-pricing-ml-dashboard-1.onrender.com/get-user-analyses", {
         userId 
       });
       console.log(res.data); 
@@ -38,7 +38,7 @@ const PastAnalysis = () => {
   // Remove analysis
   const removeAnalysis = async (id) => {
   try {
-    await axios.delete(`http://localhost:8000/delete-analysis/${id}`, {
+    await axios.delete(`https://option-pricing-ml-dashboard-1.onrender.com/delete-analysis/${id}`, {
       data: { userId }
     });
     setAnalyses(prev => prev.filter(analysis => analysis._id !== id));
