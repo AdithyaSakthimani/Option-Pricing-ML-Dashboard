@@ -68,7 +68,7 @@ function DisplayPage() {
 
 
   try {
-    const res = await axios.post("http://localhost:8000/save-analysis", {
+    const res = await axios.post("https://option-pricing-ml-dashboard-1.onrender.com/save-analysis", {
       userId,
       results: payload
     });
