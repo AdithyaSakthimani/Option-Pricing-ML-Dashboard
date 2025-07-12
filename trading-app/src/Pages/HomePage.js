@@ -46,7 +46,7 @@ const HomePage = () => {
         
        <div className="cta-buttons">
   <Link to="/options" className="btn btn-primary">AI Simulation</Link>
-  <Link to="/train" className="btn btn-secondary"> Past Analysis </Link>
+  <Link to="/pastanalysis" className="btn btn-secondary"> Past Analysis </Link>
 </div>
         </div>
         {/* Hero Image Placeholder */}
