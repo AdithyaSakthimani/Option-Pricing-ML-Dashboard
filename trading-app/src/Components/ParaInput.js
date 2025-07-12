@@ -62,7 +62,7 @@ function ParaInput() {
         setLoading(true);
         try {
             console.log('Quick Analysis for contract:', formData.contract);
-            const response = await axios.post('http://localhost:5000/predict_option_by_contract', {
+            const response = await axios.post('https://option-pricing-ml-dashboard.onrender.com/predict_option_by_contract', {
                 contract_name: formData.contract,
                 evaluation_date: formData.evaluation_date,
                 model: formData.model || 'random_forest',    
@@ -118,7 +118,7 @@ function ParaInput() {
     setLoading(true);
 
     try {
-        const response = await axios.post('http://localhost:5000/get_model_data', {
+        const response = await axios.post('https://option-pricing-ml-dashboard.onrender.com/get_model_data', {
             ticker: ticker.trim().toUpperCase(),
             model,
             option_type,
