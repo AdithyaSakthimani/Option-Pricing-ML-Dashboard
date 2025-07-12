@@ -153,7 +153,7 @@ const handleSubmit = async (e) => {
 
               {/* Hyperparameters */}
               <div className="hyperparams">
-                <h3 className="section-title">Hyperparameters</h3>
+                <h3 className="section-tit">Hyperparameters</h3>
                 
                 {/* Max Depth */}
                 <div className="param-group">

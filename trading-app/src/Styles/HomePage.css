@@ -538,6 +538,15 @@ body {
     color: var(--accent-green);
     display: block;
 }
+.stat-inf {
+    font-size: 3rem;
+    margin-bottom: 0;
+    font-weight: 800;
+    padding-bottom:0 !important; 
+    color: var(--accent-green);
+    display: block;
+
+}
 
 .stat-label {
     color: var(--text-secondary);

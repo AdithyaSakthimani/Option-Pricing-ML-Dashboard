@@ -6,6 +6,8 @@ import growthImg from '../images/feature_img_1.jpg';
 import growthImg2 from '../images/feature_img_2.jpg';
 import growthImg3 from '../images/feature_img_4.jpg';
 import growthImg4 from '../images/feature_img_5.jpg'; 
+import {Infinity,Rocket,Users,CircleCheckBig} from 'lucide-react'
+import { Link } from 'react-router-dom';
 const HomePage = () => {
   const {darkMode, setDarkMode} = useContext(NoteContext);
   useEffect(() => {
@@ -42,10 +44,10 @@ const HomePage = () => {
         <div className='hero-main'><h2 className='hero-title'><span className='hero-color'>Master Options </span> Trading Like Never Before</h2>
         <p className='hero-para'>Advanced analytics, real-time data, and intelligent insights to maximize your options trading potential. Join thousands of successful traders using our platform.</p>
         
-        <div className="cta-buttons">
-          <a href="#" className="btn btn-primary">Start Trading Free</a>
-          <a href="#" className="btn btn-secondary">Watch Demo</a>
-        </div>
+       <div className="cta-buttons">
+  <Link to="/options" className="btn btn-primary">AI Simulation</Link>
+  <Link to="/train" className="btn btn-secondary"> Past Analysis </Link>
+</div>
         </div>
         {/* Hero Image Placeholder */}
       </section>
@@ -80,43 +82,44 @@ const HomePage = () => {
 
       {/* Stats Section */}
       <section className="stats">
-            <div className="particles">
-        <div className="particle"></div>
-        <div className="particle green"></div>
-        <div className="particle red"></div>
-        <div className="particle pulse"></div>
-        <div className="particle"></div>
-        <div className="particle green pulse"></div>
-        <div className="particle red"></div>
-        <div className="particle"></div>
-    </div>
-        <div className="stats-container">
-          <h2 className="section-title-stats">Trusted by Traders Worldwide</h2>
-          
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-number">50K+</span>
-              <span className="stat-label">Active Traders</span>
-            </div>
-            
-            <div className="stat-item">
-              <span className="stat-number">$2.5B</span>
-              <span className="stat-label">Options Volume</span>
-            </div>
-            
-            <div className="stat-item">
-              <span className="stat-number">99.9%</span>
-              <span className="stat-label">Uptime</span>
-            </div>
-            
-            <div className="stat-item">
-              <span className="stat-number">24/7</span>
-              <span className="stat-label">Market Coverage</span>
-            </div>
+  <div className="particles">
+    <div className="particle"></div>
+    <div className="particle green"></div>
+    <div className="particle red"></div>
+    <div className="particle pulse"></div>
+    <div className="particle"></div>
+    <div className="particle green pulse"></div>
+    <div className="particle red"></div>
+    <div className="particle"></div>
+  </div>
 
-          </div>
-        </div>
-      </section>
+  <div className="stats-container">
+    <h2 className="section-title-stats">Ready to Scale. Built to Deliver.</h2>
+
+    <div className="stats-grid">
+      <div className="stat-item">
+        <span className="stat-number"><CircleCheckBig size ={55}/></span>
+        <span className="stat-label">Infrastructure Ready</span>
+      </div>
+
+      <div className="stat-item">
+        <span className="stat-number"><Users size={55} /></span>
+        <span className="stat-label">First Users Coming Soon</span>
+      </div>
+
+      <div className="stat-item">
+        <span className="stat-inf"><Infinity size = {55}/></span>
+        <span className="stat-label">Growth Potential</span>
+      </div>
+
+      <div className="stat-item">
+        <span className="stat-number"><Rocket size = {55}/></span>
+        <span className="stat-label">We're Just Getting Started</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 
       {/* Additional Features */}
@@ -184,53 +187,51 @@ const HomePage = () => {
 
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-section">
-            <h4>Platform</h4>
-            <ul>
-              <li><a href="#trading">Trading Platform</a></li>
-              <li><a href="#mobile">Mobile Apps</a></li>
-              <li><a href="#api">API Access</a></li>
-              <li><a href="#tools">Trading Tools</a></li>
-            </ul>
-          </div>
-          
-          <div className="footer-section">
-            <h4>Markets</h4>
-            <ul>
-              <li><a href="#stocks">Stock Options</a></li>
-              <li><a href="#etf">ETF Options</a></li>
-              <li><a href="#index">Index Options</a></li>
-              <li><a href="#futures">Futures Options</a></li>
-            </ul>
-          </div>
-          
-          <div className="footer-section">
-            <h4>Education</h4>
-            <ul>
-              <li><a href="#learn">Learning Center</a></li>
-              <li><a href="#webinars">Webinars</a></li>
-              <li><a href="#research">Market Research</a></li>
-              <li><a href="#blog">Trading Blog</a></li>
-            </ul>
-          </div>
-          
-          <div className="footer-section">
-            <h4>Support</h4>
-            <ul>
-              <li><a href="#help">Help Center</a></li>
-              <li><a href="#contact">Contact Us</a></li>
-              <li><a href="#status">System Status</a></li>
-              <li><a href="#feedback">Feedback</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="footer-bottom">
-          <p>&copy; 2025 TradePro. All rights reserved. Trading involves risk and may not be suitable for all investors.</p>
-        </div>
-      </footer>
+<footer className="footer">
+  <div className="footer-container">
+    
+    <div className="footer-section">
+      <h4>Platform</h4>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/options">AI Simulation</Link></li>
+        <li><Link to="/train">Model Trainer</Link></li>
+        <li><Link to="/pastanalysis">Past Analysis</Link></li>
+      </ul>
+    </div>
+
+    <div className="footer-section">
+      <h4>Account</h4>
+      <ul>
+        <li><Link to="/signin">Sign In</Link></li>
+        <li><Link to="/signup">Sign Up</Link></li>
+      </ul>
+    </div>
+
+    <div className="footer-section">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="https://www.investopedia.com/options-basics-tutorial-4583012" target="_blank" rel="noopener noreferrer">Options Tutorial</a></li>
+        <li><a href="https://www.cboe.com/" target="_blank" rel="noopener noreferrer">CBOE Education</a></li>
+        <li><a href="https://www.optionstrading.org/" target="_blank" rel="noopener noreferrer">OptionsTrading.org</a></li>
+      </ul>
+    </div>
+
+    <div className="footer-section">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="mailto:support@tradepro.ai">Contact Us</a></li>
+        <li><a href="#status">System Status</a></li>
+        <li><a href="#feedback">Send Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div className="footer-bottom">
+    <p>&copy; 2025 DerivIQ. All rights reserved. Options trading involves risk and is not suitable for all investors.</p>
+  </div>
+</footer>
+
     </div>
   );
 };

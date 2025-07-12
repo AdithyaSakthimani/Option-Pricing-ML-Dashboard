@@ -16,6 +16,7 @@ import SignUpSide from './Signup_Side/SignUpSide';
 import HomePage from './Pages/HomePage';
 import MainArea from './Pages/MainArea';
 import PastAnalysis from './Pages/PastAnalysis';
+/*<Route path="/train" element={<App/>} />*/
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -25,7 +26,6 @@ root.render(
       <Routes>
           <Route path="/options" element={<MainArea/>} />
           <Route path="/" element={<HomePage/>} />
-          <Route path="/train" element={<App/>} />
           <Route path="/signup" element={<SignUpSide/>} />
           <Route path="/signin" element = {<SignInSide/>}/>
           <Route path="/pastanalysis" element = {<PastAnalysis/>}/>

@@ -63,9 +63,12 @@ function ParaInput() {
         try {
             console.log('Quick Analysis for contract:', formData.contract);
             const response = await axios.post('http://localhost:5000/predict_option_by_contract', {
-            contract: formData.contract
+                contract_name: formData.contract,
+                evaluation_date: formData.evaluation_date,
+                model: formData.model || 'random_forest',    
+                useGarch: formData.useGarch || false,
+                predict_spot: formData.predict_spot || false
             });
-
             if (response.data.error) {
             alert(response.data.error);
             setLoading(false);

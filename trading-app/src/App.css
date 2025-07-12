@@ -192,11 +192,14 @@
   border: 1px solid var(--border);
 }
 
-.section-title {
-  font-size: 1.125rem;
+.section-tit {
+  font-size: 3rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+
 }
 
 .param-group {

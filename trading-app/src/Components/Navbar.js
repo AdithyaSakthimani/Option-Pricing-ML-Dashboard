@@ -3,6 +3,14 @@ import { Home, Brain, Zap, Menu, X, User, LogOut, LogIn , Sun , Moon ,History } 
 import '../Styles/Navbar.css';
 import NoteContext from '../Context/NoteContext';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+const pathToItemId = (pathname) => {
+  if (pathname === '/') return 'home';
+  if (pathname.startsWith('/train')) return 'trainer';
+  if (pathname.startsWith('/options')) return 'simulation';
+  if (pathname.startsWith('/pastanalysis')) return 'pastanalysis';
+  return 'home'; // fallback
+};
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const {username, setUsername,isAuthenticated, setIsAuthenticated,darkMode,email,setDarkMode,activeItem, setActiveItem}= useContext(NoteContext);
@@ -19,9 +27,14 @@ const Navbar = () => {
   const theme = darkMode ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', theme);
 }, [darkMode]);
+const location = useLocation();
+/*{ id: 'trainer', label: 'Model Trainer', icon: Brain , link:'/train' }*/
+useEffect(() => {
+  const matchedId = pathToItemId(location.pathname);
+  setActiveItem(matchedId);
+}, [location]);
   const navItems = [
     { id: 'home', label: 'Home Page', icon: Home , link:'/' },
-    { id: 'trainer', label: 'Model Trainer', icon: Brain , link:'/train' },
     { id: 'simulation', label: 'AI Simulation', icon: Zap , link:'/options' },
     { id: 'pastanalysis', label: 'Past Analysis', icon: History , link:'/pastanalysis' },
   ];
